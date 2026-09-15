@@ -97,4 +97,4 @@ export interface BenchmarkResponse {
 export const MAX_BENCHMARK_SIZE = 4096;
 
 /** Limite de elementos aceito pelo backend (sorting.max-array-size). */
-export const MAX_ARRAY_SIZE = 256;
+export const MAX_ARRAY_SIZE = 64;
