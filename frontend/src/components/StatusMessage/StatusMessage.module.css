@@ -1,0 +1,39 @@
+.loading {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+.dot {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background: var(--green);
+  animation: pulse 1s var(--ease) infinite alternate;
+}
+
+.error {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-left: 3px solid var(--color-error);
+  background: var(--color-error-bg);
+  color: var(--color-error);
+  font-size: var(--text-sm);
+}
+
+@keyframes pulse {
+  from {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
