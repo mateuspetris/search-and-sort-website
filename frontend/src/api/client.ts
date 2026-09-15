@@ -1,6 +1,7 @@
 import type { ErrorResponse } from './types';
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? '';
+// Sem barra final: "https://api.exemplo.com/" + "/api/..." viraria "//api/..." e a rota não seria encontrada.
+const BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/+$/, '');
 
 /** Erro de uma chamada à API, com a mensagem pronta para exibição. */
 export class ApiError extends Error {
