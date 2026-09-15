@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { executeAlgorithm } from '../../api/algorithms';
 import { MAX_ARRAY_SIZE, type AlgorithmId, type SortResponse } from '../../api/types';
@@ -56,6 +56,16 @@ export function ComparePage() {
     [results],
   );
 
+  // Execução em andamento: cancelada quando a entrada ou a seleção mudam, ou quando a página é fechada.
+  const pendingRun = useRef<AbortController | null>(null);
+  useEffect(() => () => pendingRun.current?.abort(), []);
+
+  function discardRun() {
+    pendingRun.current?.abort();
+    pendingRun.current = null;
+    setRun({ status: 'idle' });
+  }
+
   function toggle(id: AlgorithmId) {
     const next = selected.includes(id) ? selected.filter((item) => item !== id) : [...selected, id];
     if (next.length > MAX_SELECTED) {
@@ -63,7 +73,7 @@ export function ComparePage() {
     }
     setSelected(next);
     setSearchParams({ algoritmos: next.join(',') }, { replace: true });
-    setRun({ status: 'idle' });
+    discardRun();
   }
 
   // Resultados antigos são descartados para nunca exibir uma execução com outra entrada.
@@ -71,16 +81,27 @@ export function ComparePage() {
     setInputType(nextType);
     setSize(nextSize);
     setValues(generateInput(nextType, nextSize));
-    setRun({ status: 'idle' });
+    discardRun();
   }
 
   async function execute() {
+    pendingRun.current?.abort();
+    const controller = new AbortController();
+    pendingRun.current = controller;
     setRun({ status: 'loading' });
     try {
-      const responses = await Promise.all(selected.map((id) => executeAlgorithm(id, values)));
-      setRun({ status: 'success', results: responses });
+      const responses = await Promise.all(selected.map((id) => executeAlgorithm(id, values, controller.signal)));
+      if (!controller.signal.aborted) {
+        setRun({ status: 'success', results: responses });
+      }
     } catch (error) {
-      setRun({ status: 'error', error: error instanceof Error ? error : new Error(String(error)) });
+      if (!controller.signal.aborted) {
+        setRun({ status: 'error', error: error instanceof Error ? error : new Error(String(error)) });
+      }
+    } finally {
+      if (pendingRun.current === controller) {
+        pendingRun.current = null;
+      }
     }
   }
 
