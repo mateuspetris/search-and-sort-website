@@ -39,18 +39,22 @@ public void heapSort (){
 }
 
 private void refazHeap (int esq, int dir){
-    int i = esq, j = 2*i+1, temp = this.lista[i];
+    int i = esq, mF = 2*i+1; // maior filho
+    int raiz = this.lista[i];
+    boolean heap = false;
 
-    while (j <= dir){
-        if ((j < dir) && (this.lista[j] < this.lista[j+1]))
-            j++;
-        if (temp >= this.lista[j])
-            break;
-        this.lista[i] = this.lista[j];
-        i = j;
-        j = 2*i+1;
+    while ((mF <= dir) && (!heap)){
+        if (mF < dir)
+            if (this.lista[mF] < this.lista[mF+1])
+                mF ++;
+        if (raiz < this.lista[mF]) {
+            this.lista[i] = this.lista[mF];
+            i = mF;
+            mF = 2*i+1;
+        } else
+            heap = true;
     }
-    this.lista[i] = temp;
+    this.lista[i] = raiz;
 }`,
   codeNotes: [
     {
@@ -59,7 +63,7 @@ private void refazHeap (int esq, int dir){
     },
     {
       title: 'refazHeap',
-      text: 'Desce o elemento de esq comparando com o maior filho (j ou j + 1) até que nenhum filho dentro de [0..dir] seja maior. Os filhos maiores sobem por deslocamento e o elemento é escrito uma vez no fim. O laboratório faz o mesmo percurso, mas com trocas.',
+      text: 'raiz guarda o elemento de esq e mF aponta para o maior filho (2i + 1 ou o irmão à direita). Enquanto a raiz for menor que esse filho, o filho sobe para a posição i e a busca continua um nível abaixo; quando não for, heap vira true e o laço para. No fim, a raiz é escrita uma única vez no lugar que sobrou. O laboratório faz o mesmo percurso, mas com trocas.',
     },
     {
       title: 'dir encolhe',
