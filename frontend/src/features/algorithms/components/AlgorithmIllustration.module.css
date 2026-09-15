@@ -1,0 +1,54 @@
+.illustration {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.sm {
+  max-width: 10rem;
+}
+
+.lg {
+  max-width: 26rem;
+}
+
+.illustration * {
+  transition: transform 400ms var(--ease);
+  transform-box: fill-box;
+}
+
+/* Hover discreto: a peça principal de cada ilustração se move um pouco (design system, §14). */
+:global(a:hover) .lift,
+.lg .lift {
+  transform: translateY(-5px);
+}
+
+:global(a:hover) .swapA {
+  transform: translateX(8px);
+}
+
+:global(a:hover) .swapB {
+  transform: translateX(-8px);
+}
+
+:global(a:hover) .splitLeft {
+  transform: translateX(-4px);
+}
+
+:global(a:hover) .splitRight {
+  transform: translateX(4px);
+}
+
+:global(a:hover) .shake {
+  transform: translateX(4px);
+}
+
+.lg .scan {
+  animation: drift 3s var(--ease) infinite alternate;
+}
+
+@keyframes drift {
+  to {
+    transform: translateX(-6px);
+  }
+}
