@@ -1,5 +1,6 @@
 package meuprojeto.pesquisaOrdenacao.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
@@ -176,21 +177,24 @@ class AlgorithmApiIntegrationTest {
 
 	@Test
 	void arrayAboveLimitReturns400() throws Exception {
-		String values = IntStream.rangeClosed(1, 257).mapToObj(String::valueOf).collect(Collectors.joining(","));
+		String values = IntStream.rangeClosed(1, 65).mapToObj(String::valueOf).collect(Collectors.joining(","));
 
 		execute("bubble-sort", "{\"values\": [" + values + "]}")
 				.andExpect(status().isBadRequest())
-				.andExpect(jsonPath("$.message").value("The array cannot have more than 256 elements (received 257)."));
+				.andExpect(jsonPath("$.message").value("The array cannot have more than 64 elements (received 65)."));
 	}
 
 	@Test
-	void arrayAtLimitIsAccepted() throws Exception {
-		String values = IntStream.rangeClosed(1, 256).map(i -> 257 - i).mapToObj(String::valueOf)
+	void arrayAtLimitIsAcceptedWithBoundedResponseSize() throws Exception {
+		String values = IntStream.rangeClosed(1, 64).map(i -> 65 - i).mapToObj(String::valueOf)
 				.collect(Collectors.joining(","));
 
-		execute("bubble-sort", "{\"values\": [" + values + "]}")
+		// Bubble Sort invertido é o pior caso de passos: a resposta precisa continuar pequena.
+		int responseBytes = execute("bubble-sort", "{\"values\": [" + values + "]}")
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.metrics.inputSize").value(256));
+				.andExpect(jsonPath("$.metrics.inputSize").value(64))
+				.andReturn().getResponse().getContentAsByteArray().length;
+		assertThat(responseBytes).isLessThan(2_000_000);
 	}
 
 	@ParameterizedTest
