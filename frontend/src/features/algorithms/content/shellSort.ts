@@ -23,34 +23,46 @@ export const shellSort: AlgorithmContent = {
     { values: [1, 2, 3, 4, 5, 6], note: 'Array ordenado.' },
   ],
   code: `
-public static void shellSort(int[] array) {
-    for (int gap = array.length / 2; gap > 0; gap /= 2) {
+public void shellsort (){
+    int i, j, h, temp;
 
-        for (int i = gap; i < array.length; i++) {
-            int key = array[i];
-            int j = i;
+    h = 1;
+    do{
+        h = 3*h+1;
+    }while (h < this.quant);
 
-            while (j >= gap && array[j - gap] > key) {
-                array[j] = array[j - gap];
-                j -= gap;
+    do{
+        h = h/3;
+        for (i=h; i < this.quant; i++){
+            temp = this.lista[i];
+            j = i;
+            while (this.lista[j-h] > temp){
+                this.lista[j] = this.lista[j-h];
+                j -= h;
+                if (j < h) {
+                    break;
+                }
             }
-
-            array[j] = key;
+            this.lista [j] = temp;
         }
-    }
+    }while (h != 1);
 }`,
   codeNotes: [
     {
       title: 'Insertion Sort com gap',
-      text: 'O corpo é o Insertion Sort com 1 trocado por gap. Quando gap chega a 1, o código é literalmente o Insertion Sort.',
+      text: 'O corpo é o Insertion Sort com 1 trocado por h. Quando h chega a 1, o código é literalmente o Insertion Sort. O if (j < h) break impede que j − h fique negativo.',
     },
     {
-      title: 'A sequência importa',
-      text: 'Com n/2, n/4, …, 1, o pior caso é O(n²). Sequências como as de Knuth ou Ciura têm complexidades melhores — por isso não existe uma única complexidade para “o” Shell Sort.',
+      title: 'Sequência de Knuth neste código',
+      text: 'O primeiro do-while calcula h = 3h + 1 (1, 4, 13, 40, 121…) até passar do tamanho, e o segundo divide por 3 a cada rodada. Com essa sequência o pior caso cai para O(n^1,5).',
     },
     {
-      title: 'Por que não é estável',
-      text: 'Saltos longos podem passar um elemento por cima de outro igual a ele, invertendo a ordem original entre os dois.',
+      title: 'No laboratório: n/2, n/4, …, 1',
+      text: 'O laboratório, a tabela de tempos e as complexidades desta página usam a sequência original de Shell, que divide o gap por 2. Por isso a quantidade de rodadas e de comparações no laboratório é diferente da que este código faria.',
+    },
+    {
+      title: 'Contexto',
+      text: 'O método pertence à classe LCInteiro: this.lista é o vetor de inteiros e this.quant é a quantidade de elementos guardados nele.',
     },
   ],
   bestCase: {

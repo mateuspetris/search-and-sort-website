@@ -23,31 +23,35 @@ export const insertionSort: AlgorithmContent = {
     { values: [1, 2, 3, 5], highlight: [0], note: 'Com a chave 1, todos são deslocados e ele vai para o início.' },
   ],
   code: `
-public static void insertionSort(int[] array) {
-    for (int i = 1; i < array.length; i++) {
-        int key = array[i];
-        int j = i - 1;
+public void insertionSort(){
+    int i, j, temp;
 
-        while (j >= 0 && array[j] > key) {
-            array[j + 1] = array[j]; // desloca para a direita
+    for (i=1; i < this.quant; i++){
+        temp = this.lista[i];
+        j = i-1;
+        while ((j >= 0) && (this.lista[j] > temp)){
+            this.lista [j+1] = this.lista[j];
             j--;
         }
-
-        array[j + 1] = key;
+        this.lista [j+1] = temp;
     }
 }`,
   codeNotes: [
     {
       title: 'A chave fica guardada',
-      text: 'key guarda o valor enquanto os maiores são deslocados. Durante o deslocamento, o array mostra um valor repetido por um instante — é esperado.',
+      text: 'temp guarda o valor enquanto os maiores são deslocados. Durante o deslocamento, o array mostra um valor repetido por um instante — é esperado.',
     },
     {
       title: 'Parada natural',
-      text: 'O while termina assim que encontra um elemento menor ou igual. Em dados ordenados, isso acontece na primeira comparação: melhor caso O(n).',
+      text: 'O while termina assim que encontra um elemento menor ou igual a temp. Em dados ordenados, isso acontece na primeira comparação: melhor caso O(n).',
     },
     {
       title: 'Deslocar em vez de trocar',
       text: 'Cada deslocamento é uma única escrita, enquanto uma troca exige três. Por isso o laboratório mostra 0 trocas para este algoritmo.',
+    },
+    {
+      title: 'Contexto',
+      text: 'O método pertence à classe LCInteiro: this.lista é o vetor de inteiros e this.quant é a quantidade de elementos guardados nele.',
     },
   ],
   bestCase: {

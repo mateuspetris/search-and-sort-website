@@ -23,31 +23,36 @@ export const quickSort: AlgorithmContent = {
     { values: [3, 2, 1, 5, 8, 9, 6], pivot: 3, splits: [2, 3], note: 'Os índices se cruzaram: [3, 2, 1] ≤ 5 ≤ [8, 9, 6]. O processo se repete em cada lado.' },
   ],
   code: `
-public static void quickSort(int[] a, int low, int high) {
-    int i = low;
-    int j = high;
-    int pivot = a[low + (high - low) / 2]; // elemento do meio
+public void quicksort (){
+    ordena (0, this.quant-1);
+}
 
+private void ordena (int esq, int dir){
+    int pivo, i = esq, j = dir, temp;
+
+    pivo = this.lista[(i+j)/2];
     do {
-        while (a[i] < pivot) i++;
-        while (pivot < a[j]) j--;
-
+        while (this.lista[i] < pivo)
+            i++;
+        while (this.lista[j] > pivo)
+            j--;
         if (i <= j) {
-            int temp = a[i];
-            a[i] = a[j];
-            a[j] = temp;
+            temp = this.lista[i];
+            this.lista[i] = this.lista[j];
+            this.lista[j] = temp;
             i++;
             j--;
         }
     } while (i <= j);
-
-    if (low < j) quickSort(a, low, j);
-    if (i < high) quickSort(a, i, high);
+    if (esq < j)
+        ordena (esq, j);
+    if (dir > i)
+        ordena (i, dir);
 }`,
   codeNotes: [
     {
       title: 'Pivô do meio',
-      text: 'Escolher o meio evita o pior caso em entradas ordenadas ou invertidas: nelas, o elemento do meio é justamente a mediana e a divisão sai perfeita.',
+      text: 'pivo = lista[(i + j)/2]. Escolher o meio evita o pior caso em entradas ordenadas ou invertidas: nelas, o elemento do meio é justamente a mediana e a divisão sai perfeita.',
     },
     {
       title: 'Dois índices',
@@ -55,7 +60,11 @@ public static void quickSort(int[] a, int low, int high) {
     },
     {
       title: 'Quando parar',
-      text: 'O do-while termina quando i passa de j. Tudo em [low..j] é ≤ pivô e tudo em [i..high] é ≥ pivô; os elementos entre eles (se houver) já estão no lugar.',
+      text: 'O do-while termina quando i passa de j. Tudo em [esq..j] é ≤ pivô e tudo em [i..dir] é ≥ pivô; os elementos entre eles (se houver) já estão no lugar.',
+    },
+    {
+      title: 'Contexto',
+      text: 'O método pertence à classe LCInteiro: this.lista é o vetor de inteiros e this.quant é a quantidade de elementos guardados nele.',
     },
   ],
   bestCase: {

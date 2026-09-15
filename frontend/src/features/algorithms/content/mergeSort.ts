@@ -23,48 +23,71 @@ export const mergeSort: AlgorithmContent = {
     { values: [1, 2, 3, 4], note: 'As duas metades são mescladas comparando sempre os primeiros elementos.' },
   ],
   code: `
-public static void mergeSort(int[] array) {
-    mergeSort(array, new int[array.length], 0, array.length - 1);
-}
+private void dividir (int inicio, int fim) {
+    int meio;
 
-private static void mergeSort(int[] array, int[] aux, int low, int high) {
-    if (low >= high) {
-        return;
+    if (inicio<fim) {
+        meio = (inicio+fim)/2;
+        dividir(inicio, meio);
+        dividir(meio+1, fim);
+        merge (inicio, meio, fim);
     }
-    int mid = low + (high - low) / 2;
-    mergeSort(array, aux, low, mid);
-    mergeSort(array, aux, mid + 1, high);
-    merge(array, aux, low, mid, high);
 }
 
-private static void merge(int[] array, int[] aux, int low, int mid, int high) {
-    System.arraycopy(array, low, aux, low, high - low + 1);
+private void merge (int inicio, int meio, int fim) {
+    int esq, dir, auxEsq, auxDir;
+    esq = meio - inicio + 1;
+    dir = fim - meio;
+    LCInteiro2 vetEsq = new LCInteiro2(esq);
+    LCInteiro2 vetDir = new LCInteiro2(dir);
 
-    int left = low, right = mid + 1;
-    for (int k = low; k <= high; k++) {
-        if (left > mid) {
-            array[k] = aux[right++];
-        } else if (right > high) {
-            array[k] = aux[left++];
-        } else if (aux[left] <= aux[right]) {
-            array[k] = aux[left++];
+    // Copia esquerda
+    for (int i=0; i<esq; i++) {
+        vetEsq.add(this.lista[inicio+i]);
+    }
+
+    // Copia direita
+    for (int i=0; i<dir; i++) {
+        vetDir.add(this.lista[meio+i+1]);
+    }
+    auxEsq = 0;
+    auxDir = 0;
+    for (int i=inicio; i<=fim; i++) {
+        if (auxEsq < esq) {
+            if (auxDir < dir){
+                if (vetEsq.get(auxEsq) < vetDir.get(auxDir)) {
+                    this.lista[i] = vetEsq.get(auxEsq);
+                    auxEsq++;
+                } else {
+                    this.lista[i] = vetDir.get(auxDir);
+                    auxDir++;
+                }
+            } else {
+                this.lista[i] = vetEsq.get(auxEsq);
+                auxEsq++;
+            }
         } else {
-            array[k] = aux[right++];
+            this.lista[i] = vetDir.get(auxDir);
+            auxDir++;
         }
     }
 }`,
   codeNotes: [
     {
-      title: 'Um único array auxiliar',
-      text: 'aux é criado uma vez e reutilizado em todas as mesclagens. É esse array que torna o espaço O(n) e o algoritmo não in-place.',
+      title: 'Dividir e intercalar',
+      text: 'dividir parte o intervalo ao meio até sobrar um elemento e chama merge na volta da recursão. A ordenação completa começa com dividir(0, this.quant − 1).',
     },
     {
-      title: 'mid sem overflow',
-      text: 'low + (high - low) / 2 evita que low + high ultrapasse o limite de int em arrays enormes.',
+      title: 'Cópias das metades',
+      text: 'merge copia a metade esquerda para vetEsq e a direita para vetDir (listas LCInteiro2) e depois intercala as duas de volta em this.lista. Essas cópias são a memória extra O(n) que torna o algoritmo não in-place. O laboratório usa um único array auxiliar, criado uma vez.',
     },
     {
-      title: 'Estabilidade no <=',
-      text: 'Em caso de empate, o elemento da metade esquerda vem primeiro. Trocar por < quebraria a estabilidade.',
+      title: 'Estabilidade depende do <',
+      text: 'Com vetEsq.get(auxEsq) < vetDir.get(auxDir), um empate pega o elemento da direita primeiro, e iguais podem trocar de ordem. Com <= o Merge Sort é estável, como no laboratório e na tabela de características desta página.',
+    },
+    {
+      title: 'Contexto',
+      text: 'O método pertence à classe LCInteiro: this.lista é o vetor de inteiros e this.quant é a quantidade de elementos guardados nele.',
     },
   ],
   bestCase: {

@@ -22,50 +22,55 @@ export const cocktailShakerSort: AlgorithmContent = {
     { values: [1, 2, 3, 4, 5], highlight: [0], note: 'Passagem ←: o 1 volta até o início em uma única passagem.' },
   ],
   code: `
-public static void cocktailShakerSort(int[] array) {
-    int start = 0;
-    int end = array.length - 1;
-
-    while (start < end) {
-        for (int j = start; j < end; j++) {          // passagem →
-            if (array[j] > array[j + 1]) {
-                swap(array, j, j + 1);
+public void shakersort (){
+    int esq, dir, i, j, temp;
+    esq = 1;
+    dir = this.quant-1;
+    j = dir;
+    do{ //leva as menores chaves para o início
+        for (i = dir ; i >= esq; i-- ) {
+            if (this.lista[i-1] > this.lista[i]){
+                temp = this.lista[i];
+                this.lista[i] = this.lista[i-1];
+                this.lista[i-1] = temp;
+                j = i;
             }
         }
-        end--;
-
-        for (int j = end - 1; j >= start; j--) {     // passagem ←
-            if (array[j] > array[j + 1]) {
-                swap(array, j, j + 1);
+        esq = j+1;
+        //leva as maiores chaves para o final
+        for (i = esq ; i <= dir; i++){
+            if (this.lista[i-1] > this.lista[i]){
+                temp = this.lista[i];
+                this.lista[i] = this.lista[i-1];
+                this.lista[i-1] = temp;
+                j = i;
             }
         }
-        start++;
-    }
-}
-
-private static void swap(int[] array, int i, int j) {
-    int temp = array[i];
-    array[i] = array[j];
-    array[j] = temp;
+        dir = j-1;
+    }while (esq <= dir);
 }`,
   codeNotes: [
     {
-      title: 'Dois limites',
-      text: 'end diminui depois da passagem → e start aumenta depois da passagem ←: as duas pontas vão sendo fixadas.',
+      title: 'Limites pela última troca',
+      text: 'j guarda a posição da última troca. Depois da passagem ← o início avança para j + 1; depois da passagem → o final recua para j − 1. Se uma passagem não troca nada, esq passa de dir e o algoritmo para.',
     },
     {
-      title: 'Sem parada antecipada',
-      text: 'O laço só termina quando start alcança end: são sempre n(n − 1)/2 comparações, mesmo com o array ordenado. Variantes otimizadas param quando uma passagem não troca nada.',
+      title: 'No laboratório: forma básica',
+      text: 'O laboratório executa o Cocktail Shaker Sort sem essa parada e começando pela passagem →: as pontas recuam uma posição por vez e são sempre n(n − 1)/2 comparações, mesmo com o array ordenado. A ideia é a mesma; muda só a otimização e o sentido da primeira passagem.',
     },
     {
       title: 'Mesma comparação nos dois sentidos',
-      text: 'Nas duas direções compara-se array[j] > array[j + 1] e troca-se só quando é estritamente maior. Isso mantém o algoritmo estável.',
+      text: 'Nas duas direções compara-se lista[i − 1] > lista[i] e troca-se só quando é estritamente maior. Isso mantém o algoritmo estável.',
+    },
+    {
+      title: 'Contexto',
+      text: 'O método pertence à classe LCInteiro: this.lista é o vetor de inteiros e this.quant é a quantidade de elementos guardados nele.',
     },
   ],
   bestCase: {
     input: 'sorted',
     title: 'Array já ordenado',
-    explanation: 'Nenhuma troca acontece, mas todas as idas e voltas são percorridas: n(n − 1)/2 comparações. O melhor caso também é O(n²).',
+    explanation: 'Na forma básica, usada no laboratório, nenhuma troca acontece, mas todas as idas e voltas são percorridas: n(n − 1)/2 comparações. O melhor caso também é O(n²). Com a parada do código acima, uma ida e volta sem trocas bastaria: O(n).',
   },
   worstCase: {
     input: 'reversed',

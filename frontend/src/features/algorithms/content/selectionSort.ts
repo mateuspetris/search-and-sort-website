@@ -23,19 +23,18 @@ export const selectionSort: AlgorithmContent = {
     { values: [1, 2, 5, 4], highlight: [1], note: 'Posição 1: o 2 já é o menor do restante e troca consigo mesmo.' },
   ],
   code: `
-public static void selectionSort(int[] array) {
-    for (int i = 0; i < array.length - 1; i++) {
-        int minIndex = i;
-
-        for (int j = i + 1; j < array.length; j++) {
-            if (array[j] < array[minIndex]) {
-                minIndex = j;
+public void selectionSort (){
+    int i, j, min, temp;
+    for (i=0; i< this.quant-1;i++){
+        min = i;
+        for (j=i+1; j< this.quant; j++){
+            if (this.lista[j] < this.lista[min]) {
+                min = j;
             }
         }
-
-        int temp = array[i];
-        array[i] = array[minIndex];
-        array[minIndex] = temp;
+        temp = this.lista[min];
+        this.lista[min] = this.lista[i];
+        this.lista[i] = temp;
     }
 }`,
   codeNotes: [
@@ -45,11 +44,15 @@ public static void selectionSort(int[] array) {
     },
     {
       title: 'Uma troca por rodada',
-      text: 'A troca fica fora do laço interno: exatamente n − 1 trocas no total, mesmo quando o menor já está no lugar (troca consigo mesmo). Poucas movimentações, o que é útil quando escrever na memória é caro.',
+      text: 'A troca fica fora do laço interno: exatamente n − 1 trocas no total, mesmo quando min continua igual a i (troca consigo mesmo). Poucas movimentações, o que é útil quando escrever na memória é caro.',
     },
     {
       title: 'Por que não é estável',
       text: 'A troca pode levar um elemento para depois de outro igual a ele. Em [2a, 2b, 1], o 2a troca com o 1 e termina depois do 2b.',
+    },
+    {
+      title: 'Contexto',
+      text: 'O método pertence à classe LCInteiro: this.lista é o vetor de inteiros e this.quant é a quantidade de elementos guardados nele.',
     },
   ],
   bestCase: {
