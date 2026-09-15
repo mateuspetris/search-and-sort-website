@@ -1,0 +1,34 @@
+.lab {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding: var(--space-6);
+  border: var(--border);
+  border-radius: var(--radius-md);
+  background: var(--white);
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-bottom: var(--space-5);
+  border-bottom: var(--border);
+}
+
+.stage {
+  min-height: 27rem;
+}
+
+.placeholder {
+  display: grid;
+  place-items: center;
+  min-height: 27rem;
+}
+
+@media (max-width: 640px) {
+  .lab {
+    padding: var(--space-4);
+  }
+}

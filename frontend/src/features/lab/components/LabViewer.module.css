@@ -1,0 +1,56 @@
+.viewer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.message {
+  min-height: 3.3em;
+  font-size: var(--text-sm);
+  color: var(--color-text);
+}
+
+.compactMessage {
+  min-height: 4.8em;
+  font-size: var(--text-xs);
+}
+
+.type {
+  display: inline-block;
+  margin-right: var(--space-2);
+  padding: 0 0.4rem;
+  border-radius: var(--radius-sm);
+  background: var(--green-tint);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--green-deep);
+  vertical-align: 0.1em;
+}
+
+.metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-6);
+  margin: 0;
+}
+
+.metric dt {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.metric dd {
+  margin: 0;
+  font-family: var(--font-mono);
+}
+
+.value {
+  font-size: var(--text-lg);
+  font-weight: 500;
+  color: var(--green-dark);
+}
+
+.total {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
