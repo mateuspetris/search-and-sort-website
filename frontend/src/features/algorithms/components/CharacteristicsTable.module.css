@@ -1,0 +1,27 @@
+.table {
+  width: 100%;
+  max-width: 34rem;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+
+.table th,
+.table td {
+  padding: var(--space-3) 0;
+  border-bottom: var(--border);
+  text-align: left;
+  vertical-align: middle;
+}
+
+.table th {
+  width: 45%;
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+
+.table code {
+  background: none;
+  padding: 0;
+  font-size: var(--text-sm);
+  color: var(--green-dark);
+}
