@@ -1,0 +1,118 @@
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-7);
+  max-width: var(--content-width);
+  margin-inline: auto;
+  padding: var(--space-9) var(--gutter) var(--space-8);
+}
+
+.eyebrow {
+  margin-bottom: var(--space-4);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.title {
+  font-size: var(--text-hero);
+}
+
+.lead {
+  max-width: 34rem;
+  margin-top: var(--space-5);
+  font-size: var(--text-lg);
+  color: var(--color-text-muted);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+
+.heroArt {
+  width: 100%;
+  overflow: visible;
+}
+
+.sortedBar {
+  animation: grow 600ms var(--ease) both;
+  transform-box: fill-box;
+  transform-origin: bottom;
+}
+
+.heroCaption {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  fill: var(--ink-soft);
+}
+
+.lab {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: var(--space-7);
+  align-items: center;
+}
+
+.labText {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-5);
+  max-width: var(--reading-width);
+  font-size: var(--text-lg);
+}
+
+.labStats {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  list-style: none;
+}
+
+.labStats li {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-4);
+  padding-bottom: var(--space-4);
+  border-bottom: var(--border);
+}
+
+.statValue {
+  min-width: 4rem;
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--green-dark);
+}
+
+.statLabel {
+  color: var(--color-text-muted);
+}
+
+@keyframes grow {
+  from {
+    opacity: 0;
+    transform: scaleY(0.2);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 860px) {
+  .hero,
+  .lab {
+    grid-template-columns: 1fr;
+  }
+
+  .hero {
+    padding-top: var(--space-7);
+  }
+}
