@@ -29,12 +29,17 @@ public class WebConfig implements WebMvcConfigurer {
 				.allowedMethods("GET", "POST");
 	}
 
+	/**
+	 * Responde 413 aos corpos grandes demais. O tamanho real, inclusive de requisições chunked, é medido pelo
+	 * {@link RequestBodyLimitFilter}; o Content-Length declarado continua sendo verificado aqui também.
+	 */
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(new HandlerInterceptor() {
 			@Override
 			public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-				if (request.getContentLengthLong() > maxRequestSizeBytes) {
+				if (request.getAttribute(RequestBodyLimitFilter.BODY_TOO_LARGE) != null
+						|| request.getContentLengthLong() > maxRequestSizeBytes) {
 					throw new ContentTooLargeException(null);
 				}
 				return true;
