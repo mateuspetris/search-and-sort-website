@@ -23,49 +23,55 @@ export const heapSort: AlgorithmContent = {
     { values: [4, 2, 3, 5], highlight: [0], note: 'O heapify faz o 4 subir para a raiz, e o processo se repete.' },
   ],
   code: `
-public static void heapSort(int[] array) {
-    for (int root = array.length / 2 - 1; root >= 0; root--) {
-        heapify(array, root, array.length);
-    }
+public void heapSort (){
+    int dir = quant-1, esq = (dir-1)/2, temp;
 
-    for (int end = array.length - 1; end > 0; end--) {
-        swap(array, 0, end);      // maior elemento vai para o fim
-        heapify(array, 0, end);   // heap diminui em 1
-    }
-}
-
-private static void heapify(int[] array, int root, int size) {
-    while (true) {
-        int largest = root;
-        int left = 2 * root + 1;
-        int right = 2 * root + 2;
-
-        if (left < size && array[left] > array[largest]) largest = left;
-        if (right < size && array[right] > array[largest]) largest = right;
-        if (largest == root) return;
-
-        swap(array, root, largest);
-        root = largest;
+    while (esq >= 0){
+        refazHeap (esq, this.quant-1);
+        esq--;
+    } while (dir > 0){
+        temp = this.lista[0];
+        this.lista [0] = this.lista [dir];
+        this.lista [dir] = temp;
+        dir--;
+        refazHeap(0, dir);
     }
 }
 
-private static void swap(int[] array, int i, int j) {
-    int temp = array[i];
-    array[i] = array[j];
-    array[j] = temp;
+private void refazHeap (int esq, int dir){
+    int i = esq, mF = 2*i+1; // maior filho
+    int raiz = this.lista[i];
+    boolean heap = false;
+
+    while ((mF <= dir) && (!heap)){
+        if (mF < dir)
+            if (this.lista[mF] < this.lista[mF+1])
+                mF ++;
+        if (raiz < this.lista[mF]) {
+            this.lista[i] = this.lista[mF];
+            i = mF;
+            mF = 2*i+1;
+        } else
+            heap = true;
+    }
+    this.lista[i] = raiz;
 }`,
   codeNotes: [
     {
-      title: 'Construção em O(n)',
-      text: 'O primeiro laço começa em length/2 − 1 porque as posições seguintes são folhas. Construir o heap assim custa O(n), não O(n log n).',
+      title: 'Construção do heap',
+      text: 'O primeiro while começa em (dir − 1)/2, o último nó com filhos, e sobe até a raiz. As posições depois dele são folhas e já são heaps. Construir o heap assim custa O(n), não O(n log n).',
     },
     {
-      title: 'heapify iterativo',
-      text: 'O elemento desce trocando com o maior filho até que nenhum filho seja maior. A altura da árvore limita isso a O(log n) trocas.',
+      title: 'refazHeap',
+      text: 'raiz guarda o elemento de esq e mF aponta para o maior filho (2i + 1 ou o irmão à direita). Enquanto a raiz for menor que esse filho, o filho sobe para a posição i e a busca continua um nível abaixo; quando não for, heap vira true e o laço para. No fim, a raiz é escrita uma única vez no lugar que sobrou. O laboratório faz o mesmo percurso, mas com trocas.',
     },
     {
-      title: 'size',
-      text: 'O parâmetro size faz o heapify ignorar o final do array, onde os maiores elementos já estão ordenados.',
+      title: 'dir encolhe',
+      text: 'Depois de mover a raiz (o maior) para a posição dir, dir diminui: o final do array, já ordenado, fica fora do heap.',
+    },
+    {
+      title: 'Contexto',
+      text: 'O método pertence à classe LCInteiro: this.lista é o vetor de inteiros e this.quant é a quantidade de elementos guardados nele.',
     },
   ],
   bestCase: {

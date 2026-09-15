@@ -23,35 +23,44 @@ export const bubbleSort: AlgorithmContent = {
     { values: [1, 4, 2, 5], highlight: [3], note: 'Fim da 1ª passagem: o 5 chegou à posição final.' },
   ],
   code: `
-public static void bubbleSort(int[] array) {
-    for (int pass = 0; pass < array.length - 1; pass++) {
-        for (int j = 0; j < array.length - 1 - pass; j++) {
-            if (array[j] > array[j + 1]) {
-                int temp = array[j];
-                array[j] = array[j + 1];
-                array[j + 1] = temp;
+public void bubblesort (){
+    int LSup, i, j, temp;
+
+    LSup = this.quant-1;
+    do{
+        j = 0;
+        for (i = 0; i < LSup; i++)
+            if (this.lista[i] > this.lista[i+1]){
+                temp = this.lista[i];
+                this.lista[i] = this.lista[i+1];
+                this.lista[i+1] = temp;
+                j = i;
             }
-        }
-    }
+        LSup = j;
+    }while (LSup >= 1);
 }`,
   codeNotes: [
     {
-      title: 'Limite do laço interno',
-      text: 'array.length - 1 - pass ignora as últimas posições, que já receberam os maiores elementos nas passagens anteriores.',
+      title: 'Onde está a parada',
+      text: 'j guarda a posição da última troca e vira o novo limite (LSup = j). Tudo depois dela já está ordenado; se uma passagem não troca nada, j fica 0 e o do-while termina. Com o array já ordenado, este código faz só n − 1 comparações.',
     },
     {
-      title: 'Sem parada antecipada',
-      text: 'Os dois laços sempre executam por completo: são sempre n(n − 1)/2 comparações, com o array ordenado ou não. Uma variante comum adiciona uma flag para parar quando uma passagem não troca nada, mas essa é uma otimização, não o algoritmo básico.',
+      title: 'No laboratório: sem parada',
+      text: 'O laboratório e a tabela de tempos executam o Bubble Sort na forma básica, sem a parada: todas as n − 1 passagens são feitas e são sempre n(n − 1)/2 comparações. Assim os números mostram o custo do algoritmo em si, e não da otimização. Por isso, com entrada ordenada, o laboratório conta mais comparações do que este código faria.',
     },
     {
       title: 'Estabilidade',
       text: 'A troca só acontece com > (e não ≥), então elementos iguais nunca trocam de ordem entre si.',
     },
+    {
+      title: 'Contexto',
+      text: 'O método pertence à classe LCInteiro: this.lista é o vetor de inteiros e this.quant é a quantidade de elementos guardados nele.',
+    },
   ],
   bestCase: {
     input: 'sorted',
     title: 'Array já ordenado',
-    explanation: 'Nenhuma troca acontece, mas todas as n(n − 1)/2 comparações continuam sendo feitas: o custo cai só nas movimentações. Por isso o melhor caso também é O(n²).',
+    explanation: 'Na forma básica, usada no laboratório, nenhuma troca acontece, mas todas as n(n − 1)/2 comparações continuam sendo feitas: o custo cai só nas movimentações. Por isso o melhor caso também é O(n²). Com a parada do código acima, uma única passagem sem trocas bastaria: n − 1 comparações, O(n).',
   },
   worstCase: {
     input: 'reversed',

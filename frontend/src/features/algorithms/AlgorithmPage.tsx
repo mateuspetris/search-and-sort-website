@@ -87,7 +87,7 @@ function AlgorithmPageContent({ id }: { id: AlgorithmId }) {
 
       <Section id="codigo" eyebrow="04 · Código" title="Implementação em Java">
         <div className={styles.codeLayout}>
-          <CodeBlock code={content.code} title={`${content.name}.java`} />
+          <CodeBlock code={content.code} title="LCInteiro.java" />
           <dl className={styles.codeNotes}>
             {content.codeNotes.map((note) => (
               <div key={note.title}>
