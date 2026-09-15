@@ -99,4 +99,20 @@ describe('API client', () => {
     await expect(listAlgorithms()).rejects.toBeInstanceOf(ApiError);
     await expect(listAlgorithms()).resolves.toEqual([]);
   });
+
+  it('usa VITE_API_BASE_URL sem duplicar a barra quando ela termina com /', async () => {
+    vi.stubEnv('VITE_API_BASE_URL', 'https://api.exemplo.com/');
+    vi.resetModules();
+    try {
+      const { request } = await import('./client');
+      fetchMock.mockResolvedValue(jsonResponse([]));
+
+      await request('/api/algorithms');
+
+      expect(fetchMock.mock.calls[0]![0]).toBe('https://api.exemplo.com/api/algorithms');
+    } finally {
+      vi.unstubAllEnvs();
+      vi.resetModules();
+    }
+  });
 });
