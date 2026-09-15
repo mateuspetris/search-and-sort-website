@@ -1,0 +1,79 @@
+/* Design System — Pesquisa & Ordenação (docs/Design_System_Pesquisa_e_Ordenacao.md) */
+:root {
+  /* Paleta (§3) */
+  --green: #a8d5ba;
+  --green-dark: #315c4a;
+  --yellow: #f4dfa6;
+  --white: #ffffff;
+  --gray-light: #f5f6f3;
+
+  /* Tons derivados, mantendo a característica suave e pouco saturada */
+  --green-tint: #dcede2;
+  --green-deep: #24473a;
+  --yellow-dark: #b8943d;
+  --ink: #1f2d27;
+  --ink-soft: #52615a;
+  --line: #e4e7e1;
+
+  /* Papéis */
+  --color-bg: var(--white);
+  --color-bg-muted: var(--gray-light);
+  --color-text: var(--ink);
+  --color-text-muted: var(--ink-soft);
+  --color-heading: var(--green-dark);
+  --color-primary: var(--green);
+  --color-primary-strong: var(--green-dark);
+  --color-accent: var(--yellow);
+  --color-border: var(--line);
+  --color-error: #9b3d2e;
+  --color-error-bg: #fbeee9;
+
+  /* Estados das barras do laboratório */
+  --bar-default: var(--green-tint);
+  --bar-compare: var(--yellow);
+  --bar-compare-edge: var(--yellow-dark);
+  --bar-swap: var(--green-dark);
+  --bar-write: var(--green);
+  --bar-pivot-edge: var(--green-deep);
+  --bar-sorted: var(--green);
+  --bar-range: var(--gray-light);
+
+  /* Tipografia (§4) */
+  --font-display: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
+  --font-body: 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'Cascadia Code', Consolas, monospace;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-md: 1.0625rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.75rem;
+  --text-2xl: clamp(2rem, 4vw, 2.75rem);
+  --text-hero: clamp(2.5rem, 6vw, 4.25rem);
+
+  /* Espaçamento (§5) */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4.5rem;
+  --space-9: 7rem;
+
+  --content-width: 72rem;
+  --reading-width: 40rem;
+  --gutter: clamp(1rem, 5vw, 3rem);
+
+  /* Bordas e formas (§13) */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --border: 1px solid var(--color-border);
+  --shadow-soft: 0 1px 2px rgb(31 45 39 / 0.04);
+
+  /* Animações (§14) */
+  --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --duration-fast: 150ms;
+  --duration-base: 250ms;
+}
