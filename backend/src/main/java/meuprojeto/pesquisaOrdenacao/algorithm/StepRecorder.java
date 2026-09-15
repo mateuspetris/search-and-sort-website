@@ -52,31 +52,23 @@ public class StepRecorder {
 				pivotIndex, 0, message);
 	}
 
-	/** Registra o intervalo {@code [start, end]} (inclusivo) que foi dividido ou particionado. */
 	public void partition(int[] array, int start, int end, Integer pivotIndex, String message) {
 		record(OperationType.PARTITION, array, new int[] {start, end}, NONE, pivotIndex, 0, message);
 	}
 
-	/** Escreve {@code value} na posição {@code index} e registra o passo como INSERTION. */
 	public void insertion(int[] array, int index, int value, String message) {
 		write(OperationType.INSERTION, array, index, value, message);
 	}
 
-	/** Escreve {@code value} na posição {@code index} e registra o passo como MERGE. */
 	public void merge(int[] array, int index, int value, String message) {
 		write(OperationType.MERGE, array, index, value, message);
 	}
 
-	/**
-	 * Conta movimentações que não aparecem como passo: cópia da chave, do pivô ou para o array auxiliar.
-	 * Elas são somadas ao campo {@code moves} do próximo passo registrado.
-	 */
 	public void countMoves(int count) {
 		moves += count;
 		pendingMoves += count;
 	}
 
-	/** Registra o passo final e devolve o resultado completo da execução. */
 	public SortResult complete(int[] array) {
 		record(OperationType.COMPLETE, array, NONE, NONE, null, 0, "Ordenação concluída.");
 		return new SortResult(array.clone(), List.copyOf(steps), comparisons, swaps, moves);

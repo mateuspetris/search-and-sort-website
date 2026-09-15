@@ -1,8 +1,6 @@
 package meuprojeto.pesquisaOrdenacao.algorithm;
 
 /**
- * Fotografia de um instante da execução de um algoritmo.
- *
  * @param step           posição do evento na linha do tempo (começa em 1)
  * @param type           operação realizada
  * @param values         estado do array logo após a operação
@@ -12,6 +10,7 @@ package meuprojeto.pesquisaOrdenacao.algorithm;
  * @param moves          movimentações (atribuições de elementos) realizadas desde o passo anterior
  * @param message        explicação em linguagem natural
  */
+
 public record SortStep(
 		int step,
 		OperationType type,
