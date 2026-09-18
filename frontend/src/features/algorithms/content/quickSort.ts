@@ -7,20 +7,20 @@ export const quickSort: AlgorithmContent = {
   headlineComplexity: 'O(n log n)',
   simplicity: 'Média',
   intro: [
-    'O Quick Sort divide para conquistar, mas faz o trabalho antes da recursão: a partição separa o intervalo em uma parte com valores menores ou iguais ao pivô e outra com valores maiores ou iguais.',
-    'Esta é a versão apresentada por Wirth: o pivô é o elemento do meio e dois índices, i e j, caminham um em direção ao outro trocando os elementos que estão do lado errado.',
+    'O Quick Sort é um dos algoritmos de ordenação mais eficientes na prática. Ele usa a estratégia de dividir para conquistar, separando os elementos em partes menores e ordenando essas partes de forma recursiva.',
+    'A partição usa um pivô, geralmente o primeiro, o último ou o do meio. No código abaixo o pivô é o elemento do meio, e dois índices, i e j, caminham um em direção ao outro trocando os elementos que estão do lado errado.',
   ],
   howItWorks: [
-    'Guarde como pivô o valor do elemento do meio do intervalo.',
-    'Avance i enquanto a[i] for menor que o pivô; recue j enquanto a[j] for maior que o pivô.',
-    'Se i ≤ j, troque a[i] com a[j] e mova os dois índices.',
-    'Repita até i e j se cruzarem; depois ordene recursivamente [início..j] e [i..fim].',
+    'Escolha um elemento como pivô.',
+    'Percorra o vetor a partir do início, com o índice i, até encontrar um item com chave maior ou igual à do pivô.',
+    'Percorra o vetor a partir do final, com o índice j, até encontrar um item com chave menor ou igual à do pivô, e troque os itens v[i] e v[j].',
+    'Continue o percurso-e-troca até i e j se cruzarem. Então v[1], …, v[j] são todos menores ou iguais ao pivô e v[j + 1], …, v[n] são todos maiores ou iguais: cada grupo é ordenado recursivamente da mesma forma.',
   ],
   example: [
-    { values: [6, 2, 8, 5, 1, 9, 3], pivot: 3, note: 'Pivô = 5, o elemento do meio. i começa na esquerda e j na direita.' },
-    { values: [3, 2, 8, 5, 1, 9, 6], pivot: 3, highlight: [0, 6], note: 'i para no 6 (≥ 5) e j no 3 (≤ 5): estão do lado errado e são trocados.' },
-    { values: [3, 2, 1, 5, 8, 9, 6], pivot: 3, highlight: [2, 4], note: 'i avança até o 8 e j recua até o 1: nova troca.' },
-    { values: [3, 2, 1, 5, 8, 9, 6], pivot: 3, splits: [2, 3], note: 'Os índices se cruzaram: [3, 2, 1] ≤ 5 ≤ [8, 9, 6]. O processo se repete em cada lado.' },
+    { values: [520, 450, 254, 310, 285, 179, 652, 351, 423, 861], pivot: 4, highlight: [0, 5], note: 'Pivô = 285, o elemento do meio. i para no 520 (≥ 285) e j para no 179 (≤ 285): os dois são trocados.' },
+    { values: [179, 450, 254, 310, 285, 520, 652, 351, 423, 861], pivot: 4, highlight: [1, 4], note: 'i para no 450 e j para no próprio 285: nova troca.' },
+    { values: [179, 285, 254, 310, 450, 520, 652, 351, 423, 861], pivot: 1, splits: [2], note: 'i e j se cruzaram: [179, 285, 254] ≤ 285 ≤ [310, …, 861]. Cada grupo é ordenado recursivamente.' },
+    { values: [179, 254, 285, 310, 351, 423, 450, 520, 652, 861], note: 'Repetindo a partição em cada grupo até que cada um tenha um único elemento, o vetor fica ordenado.' },
   ],
   code: `
 public void quicksort (){
@@ -69,21 +69,24 @@ private void ordena (int esq, int dir){
   ],
   bestCase: {
     input: 'sorted',
-    title: 'Array já ordenado ou invertido',
-    explanation: 'Com o pivô no meio, cada partição divide o intervalo em duas metades iguais: log n níveis de recursão com trabalho O(n) em cada um. É por isso que, no quadro de Wirth, o Quick Sort é o mais rápido também nessas entradas.',
+    title: 'Partição que divide o arquivo ao meio',
+    explanation: 'C(n) = 2C(n/2) + n, em que C(n/2) é o custo de ordenar cada metade e n é o custo de examinar cada item. Isso dá cerca de 1,4 n log n comparações; em média, o tempo de execução é O(n log n). Com o pivô do meio, um vetor já ordenado ou invertido cai exatamente nesse caso.',
+    cost: { comparisons: '≈ 1,4 n log n' },
   },
   worstCase: {
     input: null,
-    title: 'Entradas construídas contra o pivô do meio',
-    explanation: 'Se o elemento do meio for sempre o menor ou o maior do intervalo, cada partição remove só um elemento e o custo vira O(n²). Essas entradas precisam ser montadas de propósito e quase não aparecem na prática.',
+    title: 'Pivô em um dos extremos',
+    explanation: 'Escolher como pivô um dos extremos de um arquivo já ordenado faz cada partição eliminar um único elemento: são n chamadas recursivas, uma pilha auxiliar de tamanho n e C(n) = n²/2 comparações. Para evitar o pior caso, escolha 3 itens quaisquer e use a mediana dos 3 como pivô. O pivô do meio, usado aqui, também evita o problema nas entradas ordenadas.',
+    cost: { comparisons: 'n²/2' },
   },
   whenToUse: [
-    'Como ordenação de uso geral em memória: é o mais rápido na média e é in-place.',
-    'Quando estabilidade não é necessária.',
+    'Como ordenação de uso geral: é muito eficiente, precisa em média de n log n operações e é usado em diversas bibliotecas padrão de linguagens de programação.',
+    'Quando só se pode gastar pouca memória: necessita apenas de uma pequena pilha auxiliar.',
   ],
   whenToAvoid: [
-    'Quando é preciso garantir o tempo no pior caso.',
-    'Quando a ordem de elementos iguais precisa ser preservada.',
+    'Em arquivos já ordenados quando a escolha do pivô não é boa: a versão recursiva tem pior caso O(n²).',
+    'Quando a estabilidade importa: o método não é estável.',
+    'Quando não há cuidado na implementação: ela é delicada e difícil, e um pequeno engano pode levar a efeitos inesperados.',
   ],
   comparisons: [
     { with: 'merge-sort', text: 'O Merge Sort garante O(n log n) e é estável, ao custo de O(n) de memória extra.' },

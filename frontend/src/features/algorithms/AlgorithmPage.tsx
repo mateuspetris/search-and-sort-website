@@ -7,12 +7,14 @@ import { Button, ButtonLink } from '../../components/Button/Button';
 import { CodeBlock } from '../../components/CodeBlock/CodeBlock';
 import { Section } from '../../components/Section/Section';
 import { ErrorMessage, LoadingMessage } from '../../components/StatusMessage/StatusMessage';
+import { Tooltip } from '../../components/Tooltip/Tooltip';
 import { useAsync } from '../../hooks/useAsync';
 import { NotFoundPage } from '../../pages/NotFoundPage';
 import { AlgorithmLab, type LabPreset } from '../lab/AlgorithmLab';
 import { INPUT_TYPES } from '../lab/inputGenerators';
 import { AlgorithmIllustration } from './components/AlgorithmIllustration';
 import { CharacteristicsTable } from './components/CharacteristicsTable';
+import { CONCEPTS } from './concepts';
 import { ExampleStrip } from './components/ExampleStrip';
 import { getAlgorithmContent, isAlgorithmId, type AlgorithmContent, type CaseExample } from './content';
 import styles from './AlgorithmPage.module.css';
@@ -139,6 +141,28 @@ function CaseCard({ label, example, onTry }: { label: string; example: CaseExamp
       <p className={styles.caseLabel}>{label}</p>
       <h3 className={styles.caseTitle}>{example.title}</h3>
       <p className={styles.caseText}>{example.explanation}</p>
+      {example.cost && (
+        <dl className={styles.cost}>
+          <div>
+            <dt>
+              <Tooltip content={CONCEPTS.comparisons}>Comparações</Tooltip>
+            </dt>
+            <dd>
+              <code>{example.cost.comparisons}</code>
+            </dd>
+          </div>
+          {example.cost.movements && (
+            <div>
+              <dt>
+                <Tooltip content={CONCEPTS.movements}>Movimentações</Tooltip>
+              </dt>
+              <dd>
+                <code>{example.cost.movements}</code>
+              </dd>
+            </div>
+          )}
+        </dl>
+      )}
       {inputLabel && (
         <Button variant="secondary" size="sm" onClick={() => onTry(example)}>
           Testar com entrada {inputLabel.toLowerCase()}

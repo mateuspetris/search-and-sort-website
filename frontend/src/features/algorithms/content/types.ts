@@ -12,11 +12,20 @@ export interface ExampleFrame {
   note: string;
 }
 
+/** Custo do caso na notação do material de estudo. */
+export interface CaseCost {
+  /** C(n): comparações de chaves. */
+  comparisons: string;
+  /** M(n): movimentações de itens, quando o material informa. */
+  movements?: string;
+}
+
 export interface CaseExample {
   /** Tipo de entrada que reproduz o caso no laboratório; `null` quando não há um gerador equivalente. */
   input: InputType | null;
   title: string;
   explanation: string;
+  cost?: CaseCost;
 }
 
 /**

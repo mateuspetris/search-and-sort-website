@@ -7,20 +7,21 @@ export const shellSort: AlgorithmContent = {
   headlineComplexity: 'O(n²) no pior caso',
   simplicity: 'Média',
   intro: [
-    'O maior problema do Insertion Sort é mover um elemento para longe: ele anda uma posição por vez. O Shell Sort resolve isso ordenando primeiro elementos distantes entre si.',
-    'A distância entre os elementos comparados se chama gap. Esta implementação usa a sequência original de Shell: n/2, n/4, …, 1. A complexidade depende diretamente dessa escolha.',
+    'O Shell Sort é um melhoramento do Insertion Sort, especialmente para vetores grandes. Ele compara elementos distantes entre si, permitindo que os valores sejam deslocados mais rapidamente para suas posições corretas.',
+    'O vetor é dividido em subvetores menores, usando um espaçamento h entre os elementos comparados. No início h é grande; a cada etapa ele diminui, até chegar a 1, quando o algoritmo se comporta como um Insertion Sort.',
+    'Como escolher os incrementos? Experimentos mostraram que cada incremento não deve ser múltiplo do anterior. Knuth mostrou, experimentalmente, que a sequência 1, 4, 13, 40, 121, … — h(s) = 3h(s − 1) + 1, com h(1) = 1 — melhora o tempo de execução em cerca de 20%.',
   ],
   howItWorks: [
-    'Comece com gap = n/2.',
-    'Faça um Insertion Sort considerando apenas elementos a gap posições de distância.',
-    'Divida o gap por 2 e repita.',
-    'Com gap = 1, o último passo é um Insertion Sort comum sobre um array que já está quase ordenado.',
+    'Compare os elementos separados por h e ordene-os, como um Insertion Sort que anda de h em h.',
+    'Reduza o h e repita a ordenação.',
+    'Continue até que h seja igual a 1.',
+    'No final, com h = 1, é feito um Insertion Sort comum sobre um vetor que já está quase ordenado, e o vetor fica ordenado.',
   ],
   example: [
-    { values: [6, 5, 4, 3, 2, 1], highlight: [0, 3], note: 'Gap 3: compara elementos a 3 posições de distância (6 e 3, 5 e 2, 4 e 1).' },
-    { values: [3, 2, 1, 6, 5, 4], highlight: [0, 1, 2], note: 'Depois do gap 3, os valores pequenos já saltaram para a metade esquerda.' },
-    { values: [3, 2, 1, 6, 5, 4], note: 'Gap 1: um Insertion Sort comum, com poucos deslocamentos restantes.' },
-    { values: [1, 2, 3, 4, 5, 6], note: 'Array ordenado.' },
+    { values: [520, 450, 254, 310, 285, 179, 652, 351, 423, 161], highlight: [0, 4, 8], note: 'h = 4: são ordenados os subvetores de elementos a 4 posições de distância, como 520, 285 e 423.' },
+    { values: [285, 161, 254, 310, 423, 179, 652, 351, 520, 450], highlight: [0, 2, 4, 6, 8], note: 'Depois de h = 4, os valores pequenos já saltaram para a esquerda. Agora h = 2: posições pares e ímpares são ordenadas separadamente.' },
+    { values: [254, 161, 285, 179, 423, 310, 520, 351, 652, 450], note: 'Depois de h = 2, o vetor está quase ordenado. Com h = 1, sobra um Insertion Sort com poucos deslocamentos.' },
+    { values: [161, 179, 254, 285, 310, 351, 423, 450, 520, 652], note: 'Com h = 1 o algoritmo termina e o vetor está ordenado.' },
   ],
   code: `
 public void shellsort (){
@@ -67,19 +68,23 @@ public void shellsort (){
   ],
   bestCase: {
     input: 'sorted',
-    title: 'Array já ordenado',
-    explanation: 'Em cada gap, toda chave é comparada uma única vez. São cerca de log n rodadas com n comparações: O(n log n).',
+    title: 'Vetor já ordenado',
+    explanation: 'Em cada h, todo elemento é comparado uma única vez e nada é deslocado. O tempo de execução é sensível à ordem inicial do arquivo: quanto mais ordenado, menos deslocamentos.',
   },
   worstCase: {
     input: null,
-    title: 'Entradas construídas contra a sequência',
-    explanation: 'Com gaps que são potências de 2, é possível montar entradas em que as rodadas iniciais não ajudam e o último gap faz trabalho quadrático. Inverter o array não é suficiente para isso: compare as entradas aleatória e invertida no laboratório.',
+    title: 'Custo ainda sem análise completa',
+    explanation: 'Ninguém ainda foi capaz de analisar o custo do Shell Sort, e por isso ninguém sabe exatamente por que ele é eficiente. Para a sequência de Knuth, conjecturas apontam para C(n) = O(n^1,25) ou C(n) = O(n (ln n)²). Com os gaps n/2, n/4, …, 1 do laboratório, há entradas que levam o último passo a um trabalho quadrático.',
   },
   whenToUse: [
-    'Quando se quer algo bem melhor que O(n²) na prática, sem recursão e sem memória extra.',
-    'Em sistemas embarcados ou com pilha limitada.',
+    'Ótima opção para arquivos com cerca de 5.000 registros.',
+    'Quando se quer uma implementação simples, com pouca quantidade de código.',
+    'Quando não se pode usar recursão nem memória extra.',
   ],
-  whenToAvoid: ['Quando a estabilidade é necessária.', 'Quando é preciso uma garantia formal de desempenho no pior caso.'],
+  whenToAvoid: [
+    'Quando a estabilidade é necessária: o método não é estável.',
+    'Quando é preciso um tempo de execução previsível: ele é sensível à ordem inicial do arquivo.',
+  ],
   comparisons: [
     { with: 'insertion-sort', text: 'É a base do Shell Sort; os gaps grandes eliminam a maior fraqueza do Insertion Sort.' },
     { with: 'heap-sort', text: 'Também é in-place e sem recursão, mas o Heap Sort garante O(n log n).' },

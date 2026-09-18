@@ -7,20 +7,21 @@ export const selectionSort: AlgorithmContent = {
   headlineComplexity: 'O(n²)',
   simplicity: 'Alta',
   intro: [
-    'O Selection Sort divide o array em duas partes: a da esquerda, já ordenada, e a da direita, ainda por ordenar.',
-    'A cada rodada, ele percorre toda a parte da direita para selecionar o menor valor e o troca com a primeira posição dessa parte. Muitas comparações, poucas trocas.',
+    'A Seleção Direta (Selection Sort) é um algoritmo de ordenação simples e intuitivo, normalmente usado para fins educacionais. É um algoritmo de ordenação por comparação: seleciona repetidamente o menor (ou o maior) elemento da lista e o coloca na posição correta.',
+    'O número de comparações é quadrático, enquanto o número de movimentações é linear: muitas comparações, poucas trocas.',
   ],
   howItWorks: [
-    'Comece na posição 0 e assuma que ela contém o menor elemento.',
-    'Percorra o restante do array; sempre que encontrar um valor menor, guarde sua posição.',
-    'Ao fim da busca, troque o menor elemento encontrado com a posição atual — mesmo que ele já esteja lá.',
-    'Avance para a próxima posição e repita até a penúltima.',
+    'Selecione o menor item do vetor.',
+    'Troque-o com o item da primeira posição.',
+    'Repita a operação com os n − 1 itens restantes.',
+    'Depois com os n − 2 itens, e assim por diante, até que reste apenas 1 item.',
   ],
   example: [
-    { values: [4, 2, 5, 1], highlight: [0], note: 'Posição 0: procurar o menor valor no restante do array.' },
-    { values: [4, 2, 5, 1], highlight: [3], note: 'Depois de comparar todos, o menor é o 1, na posição 3.' },
-    { values: [1, 2, 5, 4], highlight: [0, 3], note: 'O 1 troca de lugar com o 4.' },
-    { values: [1, 2, 5, 4], highlight: [1], note: 'Posição 1: o 2 já é o menor do restante e troca consigo mesmo.' },
+    { values: [35, 64, 41, 72, 55, 28, 30, 49, 77, 50], highlight: [0, 5], note: 'O menor item do vetor é o 28, que vai trocar de lugar com o 35 da primeira posição.' },
+    { values: [28, 64, 41, 72, 55, 35, 30, 49, 77, 50], highlight: [1, 6], note: 'Entre os n − 1 restantes, o menor é o 30: ele troca com o 64.' },
+    { values: [28, 30, 41, 72, 55, 35, 64, 49, 77, 50], highlight: [2, 5], note: 'Entre os n − 2 restantes, o menor é o 35: ele troca com o 41.' },
+    { values: [28, 30, 35, 72, 55, 41, 64, 49, 77, 50], highlight: [0, 1, 2], note: 'As três primeiras posições já estão definitivas. A seleção continua no restante do vetor.' },
+    { values: [28, 30, 35, 41, 49, 50, 55, 64, 72, 77], note: 'Depois de n − 1 seleções e trocas, o vetor está ordenado.' },
   ],
   code: `
 public void selectionSort (){
@@ -48,7 +49,7 @@ public void selectionSort (){
     },
     {
       title: 'Por que não é estável',
-      text: 'A troca pode levar um elemento para depois de outro igual a ele. Em [2a, 2b, 1], o 2a troca com o 1 e termina depois do 2b.',
+      text: 'A troca pode levar um item para depois de outro com a mesma chave. Com os registros (1, Kátia), (2, Carlos), (3, Lucas), (4, José), (5, Lucas), (6, Júlia), ordenados por código, ordenar por nome deixa (5, Lucas) antes de (3, Lucas): a ordem por código entre os nomes iguais se perde.',
     },
     {
       title: 'Contexto',
@@ -57,21 +58,24 @@ public void selectionSort (){
   ],
   bestCase: {
     input: 'sorted',
-    title: 'Array já ordenado',
-    explanation: 'As n(n − 1)/2 comparações e as n − 1 trocas continuam acontecendo: o algoritmo não tem como saber que já terminou.',
+    title: 'Vetor já ordenado',
+    explanation: 'Estar ordenado (ou quase) não ajuda em nada: o custo das comparações continua quadrático, n(n − 1)/2, e as n − 1 trocas continuam acontecendo.',
+    cost: { comparisons: 'O(n²)', movements: 'O(n)' },
   },
   worstCase: {
     input: 'reversed',
-    title: 'Qualquer entrada',
-    explanation: 'Comparações e trocas são sempre as mesmas em qualquer entrada — por isso, no quadro de Wirth, o Selection Sort tem tempos quase iguais nas três colunas.',
+    title: 'Qualquer ordem inicial',
+    explanation: 'O Selection Sort não tem melhor nem pior caso: comparações e movimentações são as mesmas para qualquer entrada. Por isso, no quadro de Wirth, os tempos são quase iguais nas três colunas.',
+    cost: { comparisons: 'O(n²)', movements: 'O(n)' },
   },
   whenToUse: [
-    'Para ensinar a ideia de “selecionar o menor” e a diferença entre comparações e trocas.',
-    'Quando cada escrita é muito cara e o número de elementos é pequeno.',
+    'Quando se quer um algoritmo simples de entender e implementar, que praticamente não requer memória extra.',
+    'Em arquivos com registros grandes: como o número de movimentações é linear, poucos registros são copiados.',
+    'Em arquivos com até cerca de 1000 registros, quando a chave tem o tamanho de 1 palavra.',
   ],
   whenToAvoid: [
-    'Em arrays quase ordenados: ele não aproveita nenhuma ordem prévia.',
-    'Quando a estabilidade importa.',
+    'Em arquivos já ordenados ou quase ordenados: isso não ajuda em nada, o custo das comparações continua quadrático.',
+    'Quando a estabilidade importa: o algoritmo pode alterar a ordem de elementos iguais.',
   ],
   comparisons: [
     { with: 'insertion-sort', text: 'Ambos são O(n²), mas o Insertion Sort chega a O(n) em dados quase ordenados e é estável.' },

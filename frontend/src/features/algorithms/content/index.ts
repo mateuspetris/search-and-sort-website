@@ -31,4 +31,4 @@ export function getAlgorithmContent(id: AlgorithmId): AlgorithmContent {
   return BY_ID.get(id)!;
 }
 
-export type { AlgorithmContent, CaseExample, ExampleFrame } from './types';
+export type { AlgorithmContent, CaseCost, CaseExample, ExampleFrame } from './types';
