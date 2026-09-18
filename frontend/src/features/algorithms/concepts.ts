@@ -6,5 +6,7 @@ export const CONCEPTS = {
   space: 'Memória adicional necessária além do próprio array.',
   stable: 'Elementos com valores iguais mantêm a ordem relativa que tinham na entrada.',
   inPlace: 'Ordena reorganizando o próprio array, usando no máximo uma quantidade pequena de memória extra.',
-  bigO: 'Notação que descreve como o custo cresce conforme o tamanho da entrada (n) aumenta.',
+  comparisons: 'C(n): quantidade de comparações feitas entre as chaves dos itens.',
+  movements: 'M(n): quantidade de movimentações de itens durante a ordenação.',
+  bigO:'Notação que descreve como o custo cresce conforme o tamanho da entrada (n) aumenta.',
 } as const;

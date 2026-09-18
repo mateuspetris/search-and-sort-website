@@ -15,8 +15,17 @@ const TOPICS = [
     id: 'ordenacao',
     title: 'O que é um algoritmo de ordenação?',
     body: [
-      'É um procedimento que reorganiza uma coleção de elementos segundo uma ordem por exemplo, números do menor para o maior.',
-      'Ordenar raramente é o objetivo final: dados ordenados permitem buscar mais rápido, remover duplicados, encontrar medianas e combinar listas.',
+      'Ordenar é rearranjar um conjunto de objetos em ordem crescente ou decrescente, com o objetivo de facilitar a recuperação posterior dos dados armazenados. A ordenação é uma operação fundamental em Ciência da Computação, pois muitos programas a usam como etapa intermediária.',
+      'Os algoritmos trabalham sobre os registros de um arquivo por meio de uma chave: um campo especial do registro que controla a ordenação. O registro pode ter outros campos, que independem da chave. A chave pode ser de qualquer tipo que se possa ordenar de forma bem definida; a ordem mais comum é numérica ou alfabética.',
+      'A escolha do melhor algoritmo depende do número de itens a ordenar, de quantos já estão ordenados de algum modo, de possíveis restrições aos valores dos itens e do dispositivo de armazenamento utilizado.',
+    ],
+  },
+  {
+    id: 'interna-externa',
+    title: 'Ordenação interna e externa',
+    body: [
+      'Ordenação interna: o arquivo cabe completamente na memória principal e pode ser guardado em uma estrutura como um array. Qualquer registro pode ser acessado imediatamente. É o caso de todos os algoritmos deste site.',
+      'Ordenação externa: o arquivo não cabe na memória principal e fica em um dispositivo externo, como disco ou fita. Como esse acesso é mais demorado, os registros costumam ser lidos em sequência ou em grandes blocos.',
     ],
   },
   {
@@ -31,8 +40,8 @@ const TOPICS = [
     id: 'tempo',
     title: 'Complexidade de tempo',
     body: [
-      'Mede quantas operações (comparações, trocas, escritas) o algoritmo executa em função do tamanho da entrada, n.',
-      'Contar operações, e não segundos, torna a análise independente do computador. Por isso o laboratório mostra comparações e trocas em destaque.',
+      'Medir o tempo de um programa com um cronômetro nem sempre é uma boa comparação: o tempo depende do computador, do compilador, do sistema operacional e da quantidade e da organização dos dados de entrada. Por isso se estima como o número de operações cresce à medida que aumenta a quantidade de dados, n.',
+      `Na ordenação, as duas operações que mais pesam são as comparações de chaves e as movimentações de itens. ${CONCEPTS.comparisons} ${CONCEPTS.movements} O laboratório mostra essas contagens em destaque.`,
     ],
   },
   {
@@ -40,6 +49,7 @@ const TOPICS = [
     title: 'Complexidade de espaço',
     body: [
       'Mede a memória extra que o algoritmo precisa além da entrada. O(1) significa uma quantidade fixa, como algumas variáveis; O(n) significa um array auxiliar do tamanho da entrada, como no Merge Sort.',
+      'A memória principal é um recurso que deve ser usado de maneira econômica. Por isso a escolha de um algoritmo não deve considerar só a velocidade: importam também o meio de armazenamento, o tamanho do arquivo e seu potencial de crescimento, a frequência de acesso e de alteração dos registros e a memória auxiliar usada.',
     ],
   },
   {
@@ -54,22 +64,23 @@ const TOPICS = [
     id: 'estavel',
     title: 'Algoritmo estável',
     body: [
-      `${CONCEPTS.stable} Isso importa ao ordenar registros por mais de um critério: ordenar alunos por nome e depois, de forma estável, por nota mantém os nomes em ordem dentro de cada nota.`,
+      `${CONCEPTS.stable} Por exemplo, uma lista de funcionários em ordem crescente de matrícula é ordenada pelo nome. Se o método for estável, funcionários com o mesmo nome continuam ordenados por matrícula.`,
+      'Alguns métodos mais eficientes, como o Quick e o Heap Sort, não são estáveis. Quando a estabilidade é importante, ela pode ser forçada em um método não estável.',
     ],
   },
   {
     id: 'in-place',
     title: 'Algoritmo in-place',
     body: [
-      `${CONCEPTS.inPlace} Bubble, Insertion, Quick e Heap Sort são in-place; o Merge Sort não, pois usa um array auxiliar.`,
+      `${CONCEPTS.inPlace} Os métodos preferidos usam um vetor como estrutura de dados e permutam os itens no próprio vetor, como Bubble, Insertion, Quick e Heap Sort. Os que precisam de memória para outra cópia dos itens, como o Merge Sort, são menos econômicos.`,
     ],
   },
   {
     id: 'eficiencia',
     title: 'Eficiência ou simplicidade?',
     body: [
-      'Algoritmos O(n²) são curtos, fáceis de entender e podem ser os mais rápidos em entradas pequenas. Algoritmos O(n log n) exigem mais código, mas escalam muito melhor.',
-      'Na prática, bibliotecas combinam os dois: usam um algoritmo eficiente e, nos pedaços pequenos, trocam para o Insertion Sort.',
+      'Um algoritmo é eficaz quando produz a resposta esperada; é eficiente quando faz isso usando bem os recursos do computador. Dois algoritmos podem resolver o mesmo problema com desempenhos bem diferentes.',
+      'Métodos simples, O(n²) comparações, servem para arquivos pequenos: produzem programas pequenos e fáceis de entender, e em muitos casos é melhor usá-los do que um método sofisticado. Métodos eficientes, O(n log n) comparações, servem para arquivos grandes, mas são mais complexos nos detalhes.',
     ],
   },
 ];
@@ -112,6 +123,18 @@ export function FundamentalsPage() {
             Com n = 100, um algoritmo O(n²) faz cerca de 15 vezes mais operações que um O(n log n).
           </figcaption>
         </figure>
+        <div className={`${styles.prose} ${styles.bigONotes}`}>
+          <p>
+            A notação não informa o tempo exato de execução: ela estima como o algoritmo se comporta quando a quantidade
+            de dados aumenta, o que permite comparar algoritmos independentemente do computador. As ordens mais comuns
+            são <code>O(1) &lt; O(log n) &lt; O(n) &lt; O(n log n) &lt; O(n²) &lt; O(n³) &lt; O(2ⁿ)</code>.
+          </p>
+          <p>
+            <strong>O(n log n)</strong> é muito comum nos algoritmos eficientes de ordenação, que quebram o problema em
+            partes menores, resolvem cada uma e juntam as soluções. <strong>O(n²)</strong> aparece quando os itens são
+            processados aos pares, com um laço dentro de outro, e é útil para problemas relativamente pequenos.
+          </p>
+        </div>
       </Section>
 
       {TOPICS.map((topic) => (

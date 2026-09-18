@@ -1,6 +1,7 @@
 .strip {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  /* Os exemplos do material têm 10 posições: cada quadro precisa caber inteiro. */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 26rem), 1fr));
   gap: var(--space-5);
   margin: 0;
   padding: 0;
@@ -21,6 +22,7 @@
 
 .cells {
   display: flex;
+  flex-wrap: wrap;
   gap: 4px;
 }
 
